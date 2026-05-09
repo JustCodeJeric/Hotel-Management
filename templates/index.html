@@ -1,1 +1,35 @@
+<div class="hero-section text-center">
+    <div class="container">
+        <h1>Find Your Perfect Stay</h1>
+        <p>Comfort and luxury in the heart of the city.</p>
+    </div>
+</div>
 
+<div class="container mt-5">
+    <div class="row g-4">
+        {% for room in rooms %}
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm border-0">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <h4 class="card-title text-uppercase">{{ room['type'] }}</h4>
+                        <span class="badge {{ 'bg-success' if room['status'] == 'Available' else 'bg-danger' }}">
+                            {{ room['status'] }}
+                        </span>
+                    </div>
+                    <p class="text-muted">Room #{{ room['room_num'] }}</p>
+                    <hr>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="fs-4 fw-bold">₱{{ room['price'] }}</span>
+                        <span class="text-muted small">per night</span>
+                    </div>
+                    <button class="btn btn-outline-primary w-100 mt-3" {{ 'disabled' if room['status'] != 'Available' }}>
+                        {{ 'Book Now' if room['status'] == 'Available' else 'Unavailable' }}
+                    </button>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
