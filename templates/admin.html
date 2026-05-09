@@ -1,0 +1,47 @@
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Manager's Dashboard</h2>
+        <span class="text-muted small">Logged in as: Administrator</span>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body p-0">
+            <table class="table table-hover mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Room</th>
+                        <th>Type</th>
+                        <th>Status</th>
+                        <th>Current Guest</th>
+                        <th class="text-end">Management Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for room in rooms %}
+                    <tr>
+                        <td class="fw-bold">{{ room['room_num'] }}</td>
+                        <td>{{ room['type'] }}</td>
+                        <td>
+                            <span class="badge rounded-pill {{ 'bg-success' if room['status'] == 'Available' else 'bg-warning text-dark' if room['status'] == 'Cleaning' else 'bg-danger' }}">
+                                {{ room['status'] }}
+                            </span>
+                        </td>
+                        <td>{{ room['guest_name'] or '---' }}</td>
+                        <td>
+                            <form action="/update_room/{{ room['id'] }}" method="POST" class="d-flex gap-2 justify-content-end">
+                                <select name="status" class="form-select form-select-sm w-auto">
+                                    <option value="Available" {% if room['status'] == 'Available' %}selected{% endif %}>Set Available</option>
+                                    <option value="Occupied" {% if room['status'] == 'Occupied' %}selected{% endif %}>Check In</option>
+                                    <option value="Cleaning" {% if room['status'] == 'Cleaning' %}selected{% endif %}>Cleaning</option>
+                                </select>
+                                <input type="text" name="guest_name" value="{{ room['guest_name'] }}" class="form-control form-control-sm w-auto" placeholder="Guest Name">
+                                <button class="btn btn-sm btn-dark">Update</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
